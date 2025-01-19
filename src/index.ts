@@ -1,12 +1,12 @@
 type Pizza = {
-    name: string;
-    price: number;
+    name: string,
+    price: number,
 }
 
 type Order = {
-    id: number;
-    pizza: Pizza;
-    status: string;
+    id: number,
+    pizza: Pizza,
+    status: "ordered" | "completed",
 }
 
 const menu = [
@@ -28,7 +28,7 @@ const placeOrder = (pizzaName: string) => {
     const selectedPizza = menu.find(pizzaObj => pizzaObj.name === pizzaName);
 
     if (!selectedPizza) {
-        console.error(`Pizza "${pizzaName}" not found on the menu.`);
+        console.error(`${pizzaName} Pizza not found on the menu.`);
         return;
     }
 
@@ -42,7 +42,7 @@ const completeOrder = (orderId: number) => {
     const order = orderQueue.find(order => order.id === orderId);
 
     if (!order) {
-        console.error(`Order ${order} not found.`);
+        console.error(`Order ${orderId} not found.`);
         return;
     }
 
