@@ -1,3 +1,14 @@
+type Pizza = {
+    name: string;
+    price: number;
+}
+
+type Order = {
+    id: number;
+    pizza: Pizza;
+    status: string;
+}
+
 const menu = [
     { name: "Margherita", price: 8 },
     { name: "Pepperoni", price: 10 },
@@ -5,11 +16,11 @@ const menu = [
     { name: "Veggie", price: 9 },
 ]
 
-let cashInRegister = 100;
-let nextOrderId = 1;
-const orderQueue = [];
+let cashInRegister: number = 100;
+let nextOrderId: number = 1;
+const orderQueue: Order[] = [];
 
-const addNewPizza = (pizzaObj: any) => {
+const addNewPizza = (pizzaObj: Pizza) => {
     menu.push(pizzaObj);
 }
 
@@ -17,23 +28,36 @@ const placeOrder = (pizzaName: string) => {
     const selectedPizza = menu.find(pizzaObj => pizzaObj.name === pizzaName);
 
     if (!selectedPizza) {
-        throw new Error(`Pizza ${pizzaName} not found on the menu.`);
+        console.error(`Pizza "${pizzaName}" not found on the menu.`);
+        return;
     }
 
     cashInRegister += selectedPizza.price;
-    const newOrder = {pizza: selectedPizza, status: "ordered"};
+    const newOrder: Order = {id: nextOrderId++, pizza: selectedPizza, status: "ordered"};
     orderQueue.push(newOrder);
     return newOrder;
 }
 
 const completeOrder = (orderId: number) => {
-    //
+    const order = orderQueue.find(order => order.id === orderId);
+
+    if (!order) {
+        console.error(`Order ${order} not found.`);
+        return;
+    }
+
+    order.status = "completed";
+    return order;
 }
 
-try {
-    console.log(menu);
-    // addNewPizza();
-    // let order = placeOrder();
-} catch(e) {
-    console.log(e);
-}
+addNewPizza({ name: "Chicken Bacon Ranch", price: 12 });
+addNewPizza({ name: "BBQ Chicken", price: 12 });
+addNewPizza({ name: "Spicy Sausage", price : 11 });
+console.log("Menu:", menu);
+
+placeOrder("Chicken Bacon Ranch");
+console.log("Order queue:", orderQueue);
+completeOrder(1);
+
+console.log("Cash in register:", cashInRegister);
+console.log("Order queue:", orderQueue);
