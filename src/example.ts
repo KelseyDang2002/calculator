@@ -66,55 +66,77 @@
 
 // ===================================================================
 
-// *** utility types and partial ***
-type User = {
-    id: number,
-    username: string,
-    role: "member" | "contributor" | "admin"
-}
+// // utility types and partial
+// type User = {
+//     id: number,
+//     username: string,
+//     role: "member" | "contributor" | "admin"
+// }
 
-// Partial
-// <T> - generics
-type UpdatedUser = Partial<User>;
+// // Partial
+// // <T> - generics
+// type UpdatedUser = Partial<User>;
 
-let nextUserId = 1;
+// let nextUserId = 1;
 
-const users: User[] = [
-    { id: nextUserId++, username: "john_doe", role: "member"},
-    { id: nextUserId++, username: "jane_smith", role: "contributor"},
-    { id: nextUserId++, username: "alice_jones", role: "admin"},
-    { id: nextUserId++, username: "charlie_brown", role: "member"}
-];
+// const users: User[] = [
+//     { id: nextUserId++, username: "john_doe", role: "member"},
+//     { id: nextUserId++, username: "jane_smith", role: "contributor"},
+//     { id: nextUserId++, username: "alice_jones", role: "admin"},
+//     { id: nextUserId++, username: "charlie_brown", role: "member"}
+// ];
 
-const updateUser = (id: any, updates: UpdatedUser) => {
-    // find the user in the array by id
-    const foundUser = users.find(user => user.id === id)
+// const updateUser = (id: any, updates: UpdatedUser) => {
+//     // find the user in the array by id
+//     const foundUser = users.find(user => user.id === id)
 
-    if (!foundUser) {
-        console.error(`User with id ${id} not found.`);
-        return;
-    }
+//     if (!foundUser) {
+//         console.error(`User with id ${id} not found.`);
+//         return;
+//     }
 
-    // use Object.assign() to update the found user in place
-    Object.assign(foundUser, updates);
-}
+//     // use Object.assign() to update the found user in place
+//     Object.assign(foundUser, updates);
+// }
 
-updateUser(1, { username: "new_john_doe" });
-updateUser(4, { role: "contributor" });
+// updateUser(1, { username: "new_john_doe" });
+// updateUser(4, { role: "contributor" });
 
-// Omit
-// omit the requirement of the id property from User
-const addNewUser = (newUser: Omit<User, "id">): User => {
-    const user: User = {
-        id: nextUserId++,
-        ...newUser
-    }
-    users.push(user);
-    return user;
-}
+// // Omit
+// // omit the requirement of the id property from User
+// const addNewUser = (newUser: Omit<User, "id">): User => {
+//     const user: User = {
+//         id: nextUserId++,
+//         ...newUser
+//     }
+//     users.push(user);
+//     return user;
+// }
 
-addNewUser({ username: "joe_schmoe", role: "admin" });
+// addNewUser({ username: "joe_schmoe", role: "admin" });
 
-console.log(users);
+// console.log(users);
 
 // ===================================================================
+
+// Generics
+// act like function parameters but for types
+// uses this syntax <>
+// generics can act as a placeholder for whatever the type is going to be
+
+const gameScores = [14, 21, 33, 42, 59];
+const favoriteThings = ["raindrops on roses", "whiskers on kittens", "bright copper kettles", "warm woolen mittens"];
+const voters = [{ name: "Alice", age: 42 }, { name: "Bob", age: 77 }];
+
+// takes an array as a parameter and returns last item in the array
+// array has implicit any type
+// array is an array type but we don't necesssarily know what types the array will hold
+// the name 'Type' is not built into TS, but a name chosen by us
+const getLastItem = <Type>(array: Type[]): Type | undefined => {
+    return array[array.length - 1];
+}
+
+// by hovering over the function's passed parameters, we can see the specific types of each array
+console.log(getLastItem(gameScores));
+console.log(getLastItem(favoriteThings));
+console.log(getLastItem(voters));
